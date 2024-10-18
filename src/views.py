@@ -6,7 +6,7 @@ from typing import Any
 from dotenv import load_dotenv
 
 from src.utils import (card_information, get_currency_rates, get_price_stocks, greeting, read_data_from_excel,
-                   top_transactions)
+                       top_transactions)
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 rel_file_path = os.path.join(current_dir, "../logs/views.log")

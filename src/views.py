@@ -6,7 +6,7 @@ from typing import Any
 from dotenv import load_dotenv
 
 from src.utils import (card_information, get_currency_rates, get_price_stocks, greeting, read_data_from_excel,
-                   top_transactions)
+                       top_transactions, filter_by_date)
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 rel_file_path = os.path.join(current_dir, "../logs/views.log")
@@ -39,9 +39,10 @@ def response_json(date: str) -> Any:
     """Основная функция принимающая на вход строку с датой и временем в формате
     YYYY-MM-DD HH:MM:SS и возвращающую JSON-ответ"""
     transactions = read_data_from_excel(PATH_TO_EXCEL)
-    greetings = greeting(date)
-    cards = card_information(transactions)
-    top_5 = top_transactions(transactions)
+    ranged_transactions = filter_by_date(transactions, date)
+    greetings = greeting()
+    cards = card_information(ranged_transactions)
+    top_5 = top_transactions(ranged_transactions)
     currency_rates = get_currency_rates(user_choice["user_currencies"], API_KEY_CURRENCY)
     price_stocks = get_price_stocks(user_choice["user_stocks"], API_KEY_STOCKS)
     user_data = {
@@ -53,3 +54,4 @@ def response_json(date: str) -> Any:
     }
     logger.info("Формирование JSON-ответа")
     return json.dumps(user_data, ensure_ascii=False, indent=4)
+
